@@ -1,0 +1,20 @@
+{
+    "autoscroll": true,
+    "showtimestamp": true,
+    "showsenttext": true,
+    "displayhex": false,
+    "lineending": 1,
+    "baudrateindex": 9,
+    "databits": 8,
+    "parity": "N",
+    "stopbits": 1,
+    "readtimeout": 0.02,
+    "bytetimeout": 0.5,
+    "comport": "COM5",
+    "goRelAbs": 1,
+    "coordUnit": false,
+    "portlist": {
+        "COM1": "Kommunik\u00e1ci\u00f3s port (COM1)",
+        "COM4": "Intel(R) Active Management Technology - SOL (COM4)"
+    }
+}

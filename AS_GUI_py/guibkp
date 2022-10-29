@@ -1,0 +1,78 @@
+	# for i in range(25):
+	# 	tk.Grid.rowconfigure(root, i, weight=1)
+	# for j in range(25):
+	# 	tk.Grid.columnconfigure(root, j, weight=1)
+
+	controlLbl = tk.Label(root, text="Controls").grid(row=1, column=14, padx=2, pady=2, sticky=tk.W)
+	movexText = tk.Entry(root).grid(row=11, column=0, columnspan=6, padx=4, pady=8, sticky=tk.S+tk.EW)
+	moveyText = tk.Entry(root).grid(row=11, column=0, columnspan=6, padx=4, pady=8, sticky=tk.S+tk.EW)
+	movezText = tk.Entry(root).grid(row=11, column=0, columnspan=6, padx=4, pady=8, sticky=tk.S+tk.EW)
+	moveaText = tk.Entry(root).grid(row=11, column=0, columnspan=6, padx=4, pady=8, sticky=tk.S+tk.EW)
+	relRad = tk.Radiobutton(root, text="Abs", variable=goRelAbsVal, value=0)#preferences
+	absRad = tk.Radiobutton(root, text="Rel", variable=goRelAbsVal, value=1)#preferences
+	goBtn = tk.Button(root, width=12, text='Go', state=tk.DISABLED, command=lambda:sendCmd(None)).grid(row=11, column=6, padx=4, pady=4, sticky=tk.SW)
+	y_negBtn = tk.Button(root, width=12, height=12, text='Y-', command=addJob).grid(row=8, column=14, padx=4, pady=4)
+	x_negBtn = tk.Button(root, width=12, height=12, text='X-', command=editJob).grid(row=8, column=16, padx=4, pady=4)
+	x_posBtn = tk.Button(root, width=12, height=12, text='X+', command=deleteJob).grid(row=8, column=18, padx=4, pady=4)
+	y_posBtn = tk.Button(root, width=12, height=12, text='Y+', command=clearJobs).grid(row=8, column=20, padx=4, pady=4)
+	z_negBtn = tk.Button(root, width=12, height=12, text='Z-', command=clearOutputCmd).grid(row=1, column=15, padx=4, pady=4)
+	z_posBtn = tk.Button(root, width=12, height=12, text='Z+', command=setting).grid(row=1, column=17, padx=4, pady=4)
+	a_posBtn = tk.Button(root, width=12, height=12, text='A+', command=clearOutputCmd).grid(row=1, column=19, padx=4, pady=4)
+	a_negBtn = tk.Button(root, width=12, height=12, text='A-', command=clearOutputCmd).grid(row=1, column=19, padx=4, pady=4)
+	goHomeBtn = tk.Button(root, width=12, text='Go Home', command=clearOutputCmd).grid(row=1, column=19, padx=4, pady=4)
+	parkBtn = tk.Button(root, width=12, text='Park', command=clearOutputCmd).grid(row=1, column=19, padx=4, pady=4)
+	#goTo...Btn = tk.Button(root, width=12, text='Go To...', command=clearOutputCmd).grid(row=1, column=19, padx=4, pady=4)
+	rmTipBtn = tk.Button(root, width=12, text='Remove Tip', command=clearOutputCmd).grid(row=1, column=19, padx=4, pady=4)
+	lcValveBtn = tk.Button(root, width=12, text='LC Valve Inject', command=clearOutputCmd).grid(row=1, column=19, padx=4, pady=4)
+	fcValveBtn = tk.Button(root, width=12, text='FC Valve Collect', command=clearOutputCmd).grid(row=1, column=19, padx=4, pady=4)
+	wash1Btn = tk.Button(root, width=12, text='Wash 1 On', command=clearOutputCmd).grid(row=1, column=19, padx=4, pady=4)
+	wash2Btn = tk.Button(root, width=12, text='Wash 2 On', command=clearOutputCmd).grid(row=1, column=19, padx=4, pady=4)
+
+
+	jobLbl = tk.Label(root, text="Jobs").grid(row=1, column=14, padx=2, pady=2, sticky=tk.W)
+	jobLstBox = Drag_and_Drop_Listbox(root, font=('Arial', 10)) #disabled
+	jobLstBox.grid(row=2, column=14, columnspan=7, rowspan=6, padx=4, sticky=tk.NSEW)
+	scrolly = ttk.Scrollbar(root, orient=VERTICAL, command=jobLstBox.yview)
+	scrolly.grid(row=2, column=21, rowspan=6, sticky=(N, W, S))
+	jobLstBox.configure(yscrollcommand=scrolly.set)
+	jobLstBox.bind('<Button-3>', showJobLstBoxMenu)
+
+	addBtn = tk.Button(root, width=12, text='Add...', command=addJob).grid(row=8, column=14, padx=4, pady=4) #context men as well
+	editBtn = tk.Button(root, width=12, text='Edit', command=editJob).grid(row=8, column=16, padx=4, pady=4) #&
+	deleteBtn = tk.Button(root, width=12, text='Delete', command=deleteJob).grid(row=8, column=18, padx=4, pady=4) #&
+	clearBtn = tk.Button(root, width=12, text='Clear', command=clearJobs).grid(row=8, column=20, padx=4, pady=4) #
+	appendBtn = tk.Button(root, width=12, text='Append...', command=clearOutputCmd).grid(row=1, column=15, padx=4, pady=4) #+insert?
+	openBtn = tk.Button(root, width=12, text='Open...', command=setting).grid(row=1, column=17, padx=4, pady=4) #?
+	saveBtn = tk.Button(root, width=12, text='Save...', command=clearOutputCmd).grid(row=1, column=19, padx=4, pady=4) #?
+	movetopBtn = tk.Button(root, width=2, text='T', command=moveTopJob).grid(row=3, column=23, padx=4, pady=4, sticky=tk.W)
+	moveupBtn = tk.Button(root, width=2, text='U', command=moveUpJob).grid(row=4, column=23, padx=4, pady=4, sticky=tk.W)
+	movedownBtn = tk.Button(root, width=2, text='D', command=moveDownJob).grid(row=5, column=23, padx=4, pady=4, sticky=tk.W)
+	movebottomBtn = tk.Button(root, width=2, text='B', command=moveBottomJob).grid(row=6, column=23, padx=4, pady=4, sticky=tk.W) #draganddrop
+
+	txText = tk.Entry(root)
+	txText.grid(row=11, column=0, columnspan=6, padx=4, pady=8, sticky=tk.S+tk.EW)
+	txText.bind('<Up>', upKeyCmd)
+	txText.bind('<Down>', downKeyCmd)
+	txText.bind('<Button-3>', showTxTextMenu)
+	sendBtn = tk.Button(root, width=12, text='Send', state=tk.DISABLED, command=lambda:sendCmd(None))
+	sendBtn.grid(row=11, column=6, padx=4, pady=4, sticky=tk.SW)
+
+	sentLbl = tk.Label(root, text="Serial Sent").grid(row=10, column=0, padx=2, pady=2, sticky=tk.SW)
+	sentText = tkscroll.ScrolledText(root, state=tk.DISABLED, font=('Courier', 10), wrap=tk.WORD)
+	sentText.grid(row=12, column=0, columnspan=7, rowspan=5, padx=4, sticky=tk.NSEW)
+	sentText.bind('<Button-3>', showRxTextMenu)
+	rxLbl = tk.Label(root, text="Serial Received").grid(row=11, column=7, padx=2, pady=2, sticky=tk.SW)
+	rxText = tkscroll.ScrolledText(root, state=tk.DISABLED, font=('Courier', 10), wrap=tk.WORD)
+	rxText.grid(row=12, column=7, columnspan=7, rowspan=5, padx=4, sticky=tk.NSEW)
+	rxText.bind('<Button-3>', showRxTextMenu)
+	logLbl = tk.Label(root, text="Logs").grid(row=11, column=14, padx=2, pady=2, sticky=tk.SW)
+	logText = tkscroll.ScrolledText(root, state=tk.DISABLED, font=('Courier', 10), wrap=tk.WORD)
+	logText.grid(row=12, column=14, columnspan=7, rowspan=5, padx=4, sticky=tk.NSEW)
+	logText.bind('<Button-3>', showRxTextMenu)
+
+	connectBtn = tk.Button(root, width=12, text='Connect', command=connectPort)
+	connectBtn.grid(row=12, column=23, padx=4, pady=4)
+	settingBtn = tk.Button(root, width=12, text='Serial Settings', command=setting)
+	settingBtn.grid(row=14, column=23, padx=4, pady=4)
+	clearBtn = tk.Button(root, width=12, text='Clear Output', command=clearOutputCmd)
+	clearBtn.grid(row=16, column=23, padx=4, pady=4)

@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "autosampler_grbl5x"
+		},
+		{
+			"path": "AS_GUI_py"
+		},
+		{
+			"path": "Clarity_FC_rb"
+		}
+	],
+	"settings": {}
+}
